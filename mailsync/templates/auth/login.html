@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+
+<div id="form_block">
+	<form action="{{ app.base_url }}/login" method="post">
+	<fieldset>
+	<ul>
+		{% if message %}
+		<li>
+			<span class="message green">
+				{{ message }}
+			</span>
+		</li>	
+		{% endif %}
+		{% if errors %}
+		<li>
+			<span class="error">
+				{{ errors }}
+			</span>
+		</li>
+		{% endif %}
+		<li>
+			<label for="" class="background-label username">Username</label>
+			<input name="username" type="text" placeholder="Username" />
+		</li>
+		<li>
+			<label for="" class="background-label password">Password</label>
+			<input name="password" type="password" placeholder="Password" />
+		</li>
+	</ul>
+	
+	</fieldset>
+	<ul class="form_footer">
+		<li>
+			{{ app.xsrf }}
+			<input type="hidden" name="next" value="{{ next }}" />
+			<input class="button-submit" type="submit" value="Login">
+		</li>	
+	</ul>
+	</form>
+</div><!-- form block END -->
+{% endblock content %}

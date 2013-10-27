@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block style %}
+    <link rel="stylesheet" href="{{ app.base_url }}/media/css/chosen.css">
+{% endblock %}
+{% block title %}
+Sync > API
+{% endblock title %}
+{% block content %}
+<div id="form_block">
+	<ul class="steps">
+		<li>
+			<span class="number active">1</span>
+			<span class="line"></span>
+		</li>
+		<li>
+			<span class="number">2</span>
+			<span class="line"></span>
+		</li>
+		<li><span class="number">3</span></li>
+	</ul>
+	<ul class="steps_description">
+		<li class="active">API</li>
+		<li class="database">Database</li>
+		<li>Columns</li>
+	</ul>
+
+	<form method="post" action="{{app.base_url}}/api" id="api-form" name="api-form">
+		<fieldset>
+			<ul>
+				<li>
+					<label for="" class="background-label provider">Provider</label>
+					<ul class="providers">
+						<li>
+							<div class="block mailchimp">
+								<img src="{{ app.base_url }}/media/images/mailchimp.png">
+							</div>
+							<input type="radio" name="api.provider" class="radiobuttons" id="mailchimp" value="mailchimp" checked="true">
+							<span>Mailchimp</span>
+						</li>
+						<li>
+							<div class="block campaignmonitor">
+								<img src="{{ app.base_url }}/media/images/campaignmonitor.png">
+							</div>
+							<input type="radio" name="api.provider" class="radiobuttons" id="campaignmonitor" value="campaignmonitor">
+							<span>Campaign Monitor</span>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<label for="api-key">API key:</label>
+					<input type="text" id="apikey" name="api.key" value="">
+					<p class="instructions mailchimp-instructions">
+						To obtain your Mailchimp API key follow the instructions from:<br>
+						<a href="http://kb.mailchimp.com/article/where-can-i-find-my-api-key" target="_blank">
+							http://kb.mailchimp.com/article/where-can-i-find-my-api-key</a>
+					</p>
+
+					<p class="instructions campaign-instructions">
+						To obtain your Campaign Monitor API key follow the instructions from:
+						<a href="http://help.campaignmonitor.com/topic.aspx?t=206" target="_blank">
+							http://help.campaignmonitor.com/topic.aspx?t=206</a>
+					</p>
+					<div class="loader"></div>
+					<a id="checkapi" class="button-default" name="checkapi" href="javascript:void(0);">Get lists</a>
+				</li>
+				<li id="lists-container" name="lists-container"></li>
+			</ul>
+		</fieldset>
+		<ul class="form_footer">
+			<li>
+				{{ app.xsrf }}
+				<input type="hidden" id="listid" name="listid" value="">
+				<input type="hidden" id="listname" name="listname" value="">
+				<input class="button-submit" type="submit" value="Next" style="display:none">
+			</li>	
+		</ul>
+	</form>
+
+</div><!-- form block END -->
+<!-- Lists Select Template -->
+<script id="tmpl-lists" type="text/html">
+	<% if (clients_lists.length > 0) { %>
+		<label>Lists</label>
+		<select id="lists" name="lists" data-placeholder="Choose a List to continue" style="width:400px;">
+			<option value=""></option>
+		<% _.each(clients_lists, function(client_list) { %>
+			
+			<% if (client_list.client) { %>
+				<optgroup label="<%= client_list.client %>">
+			<% } %>
+			
+			<% _.each(client_list.lists, function(list) { %>
+				<option value="<%= list.id %>"><%= list.name %></option>
+			<% }); %>
+
+			<% if (client_list.client) { %>
+				</optgroup>
+			<% } %>
+
+		<% }); %>
+		</select>
+	<% } else { %>
+		No lists found.
+	<% }%>
+</script>
+{% endblock content %}
+
+{% block javascript %}
+	<script type="text/javascript" src="{{ app.base_url }}/media/js/libs/form2js.min.js"></script>
+	<script type="text/javascript" src="{{ app.base_url }}/media/js/libs/chosen.jquery.min.js"></script>
+  	<script type="text/javascript" src="{{ app.base_url }}/media/js/libs/spin.min.js"></script>
+	<script type="text/javascript" src="{{ app.base_url }}/media/js/api.js"></script>
+{% endblock %}

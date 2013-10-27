@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block style %}
+    <link rel="stylesheet" href="{{ app.base_url }}/media/css/chosen.css">
+{% endblock %}
+{% block title %}
+Sync > Column
+{% endblock title %}
+{% block wrapper %}full_wrapper{% endblock wrapper %}
+{% block content %}
+<div id="form_block">
+	<ul class="steps">
+		<li>
+			<span class="number active">1</span>
+			<span class="line active"></span>
+		</li>
+		<li>
+			<span class="number active">2</span>
+			<span class="line active"></span>
+		</li>
+		<li><span class="number active">3</span></li>
+	</ul>
+	<ul class="steps_description">
+		<li class="active">API</li>
+		<li class="database active">Database</li>
+		<li class="active">Columns</li>
+	</ul>
+				
+	<form method="post" action="{{app.base_url}}/columns" id="columns-form" name="columns-form">
+		<fieldset>
+			<table>
+				<!-- header row -->
+				{% if header_row %}
+					<tr>
+					{% for column in header_row %}
+						<td>
+							<span class="column-name">{{column}}</span> <br />
+							<select data-placeholder="Select a field" style="width:130px;" class="column-select" id="email-field-{{ loop.index }}" name="email-field-{{ loop.index }}">
+								<option value=""></option>
+								{% if select_fields %}
+									{% for select_field in select_fields %}
+										<option value="{{ select_field.key }}">{{ select_field.value }}</option>
+									{% endfor %}
+								{% endif %}
+							</select>
+						</td>
+					{% endfor %}
+					</tr>
+				{% endif %}
+				<!-- sample table rows -->
+				{% if rows %}
+					{%- for row in rows %}
+					<tr>
+						{%- for column in row %}
+						<td>
+							{{ column }}
+						</td>
+						{% endfor %}
+					</tr>
+					{% endfor %}
+				{% endif %}
+			</table>
+			{% if select_fields %}
+				{% for select_field in select_fields %}
+					<input type="hidden" id="{{ select_field.key }}" name="{{ select_field.key }}" value="">
+				{% endfor %}
+			{% endif %}
+		</fieldset>
+		<ul class="form_footer">
+			<li>
+				{{ app.xsrf }}
+				<input class="button-submit" type="submit" value="Next" style="display:none">
+			</li>
+		</ul>
+	</form>
+</div><!-- form block END -->
+<script id="tmpl-message" type="text/html">
+Select the columns you want to sync with 
+{% if app.session.provider.provider == 'mailchimp' %}Mailchimp{% else %}Campaign Monitor{% endif %}.
+The email column is mandatory.
+</script>
+{% endblock content %}
+
+{% block javascript %}
+	<script type="text/javascript" src="{{ app.base_url }}/media/js/libs/chosen.jquery.min.js"></script>
+	<script src="{{ app.base_url }}/media/js/column.js"></script>
+{% endblock %}

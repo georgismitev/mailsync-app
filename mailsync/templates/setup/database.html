@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block style %}
+    <link rel="stylesheet" href="{{ app.base_url }}/media/css/chosen.css">
+{% endblock %}
+{% block title %}
+Sync > Database
+{% endblock title %}
+{% block content %}
+<div id="form_block">
+	<ul class="steps">
+		<li>
+			<span class="number active">1</span>
+			<span class="line active"></span>
+		</li>
+		<li>
+			<span class="number active">2</span>
+			<span class="line"></span>
+		</li>
+		<li><span class="number">3</span></li>
+	</ul>
+	<ul class="steps_description">
+		<li class="active">API</li>
+		<li class="database active">Database</li>
+		<li>Columns</li>
+	</ul>
+
+	<form method="post" action="{{ app.base_url }}/database" id="drivers-form">
+		<fieldset>
+			<ul>
+				{% if errors.invalid_connection %}
+					<li>Can"t connect to the database</li>
+				{% endif %}
+				<li>
+					<label for="driver">Driver:</label>
+					<select id="driver" name="driver.driver" style="width:400px;">
+						<option value="postgresql" >PostgreSQL</option>
+						<option value="mysql" selected>MySQL</option>
+					</select>
+				</li>
+				<li>
+					<label for="host">Server:</label>
+					<input type="text" id="host" name="driver.host" value="{{ driver.host }}">
+					{{ errors.host }}
+				</li>
+				<li>
+					<label for="port">Port:</label>
+					<input type="number" id="port" name="driver.port"  value="{{ driver.port }}">
+					{{ errors.port }}
+				</li>
+				<li>
+					<label for="database">Database:</label>
+					<input type="text" id="database" name="driver.database" value="{{ driver.database }}">
+					{{ errors.database }}
+				</li>
+				<li>
+					<label for="username">Username:</label>
+					<input type="text" id="username" name="driver.username"  value="{{ driver.username }}">
+					{{ errors.username }}
+				</li>
+				<li>
+					<label for="password">Password:</label>
+					<input type="password" id="password" name="driver.password" value="{{ driver.password }}">
+					{{ errors.password }}
+					<div class="loader"></div>
+					<a id="checkconnection" class="button-default" name="checkconnection" href="javascript:void(0);">Check connection</a>
+				</li>
+				<li id="tables-container"></li>
+			</ul>
+		</fieldset>
+		<ul class="form_footer">
+			<li>
+				{{ app.xsrf }}
+				<input class="button-submit" type="submit" value="Next" style="display:none">
+			</li>	
+		</ul>
+	</form>
+
+</div><!-- form block END -->
+
+<!-- Table Select Template -->
+<script id="tmpl-tables" type="text/html">
+	<% if (tables.length > 0) { %>
+		<label>Tables</label>
+		<select id="tables" name="tables" data-placeholder="Choose a Table to continue" style="width:400px;">
+			<option value=""></option>
+			<% _.each(tables, function(table) { %>
+				<option value="<%= table %>"><%= table %></option>
+			<% }); %>
+		</select>
+	<% } else { %>
+		No tables found.
+	<% }%>
+</script>
+
+{% endblock content %}
+
+{% block javascript %}
+	<script type="text/javascript" src="{{ app.base_url }}/media/js/libs/form2js.min.js"></script>
+	<script type="text/javascript" src="{{ app.base_url }}/media/js/libs/chosen.jquery.min.js"></script>
+  	<script type="text/javascript" src="{{ app.base_url }}/media/js/libs/spin.min.js"></script>
+	<script type="text/javascript" src="{{ app.base_url }}/media/js/database.js"></script>
+{% endblock %}

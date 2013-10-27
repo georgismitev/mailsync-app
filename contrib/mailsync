@@ -1,0 +1,74 @@
+#!/usr/bin/env python
+### BEGIN INIT INFO
+# Provides:          mailsync
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start the Mailsync web interface
+# Description:       Runs the Mailsync web application.
+### END INIT INFO
+import logging
+import sys
+
+try:
+	import mailsync
+except:
+	print 'Mailsync is not installed'
+	sys.exit()
+
+from mailsync.system.daemon import Daemon
+from mailsync.app import application
+from mailsync import settings
+import tornado.ioloop
+
+PIDFILE = '/var/run/mailsync.pid'
+# Keep all log files in one place
+
+# Configure logging
+logging.basicConfig(filename=settings.LOGFILE_PATH,level=logging.INFO)
+
+class MailsyncDaemon(Daemon):
+
+	def run(self):
+		application.listen(int(settings.WEB_APP['port']))
+		tornado.ioloop.IOLoop.instance().start()
+
+if __name__ == "__main__":
+
+	daemon = MailsyncDaemon(PIDFILE)
+
+	if len(sys.argv) == 2:
+		if 'start' == sys.argv[1]:
+			try:
+				daemon.start()
+			except:
+				pass
+		elif 'stop' == sys.argv[1]:
+			print "Stopping Mailsync ..."
+			daemon.stop()
+		elif 'restart' == sys.argv[1]:
+			print "Restaring Mailsync ..."
+			daemon.restart()
+		elif 'status' == sys.argv[1]:
+			try:
+				pf = file(PIDFILE,'r')
+				pid = int(pf.read().strip())
+				pf.close()
+			except IOError:
+				pid = None
+			except SystemExit:
+				pid = None
+
+			if pid:
+				print 'Mailsync {0} running as pid {1}'.format(mailsync.__version__, pid)
+				print 'You can check it out at {0}:{1}'.format(settings.WEB_APP['host'],
+						settings.WEB_APP['port'])
+			else:
+				print 'Mailsync {0} is not running.'.format(mailsync.__version__)
+
+		else:
+			print "Unknown command"
+			sys.exit(2)
+			sys.exit(0)
+	else:
+		print "usage: %s start|stop|restart|status" % sys.argv[0]
+		sys.exit(2)

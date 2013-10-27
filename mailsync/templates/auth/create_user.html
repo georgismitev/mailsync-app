@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}
+	Create user
+{% endblock title %}
+{% block content %}
+		<div id="form_block">
+			
+			<form action="{{ app.base_url }}/create_user" method="post">
+			<fieldset>
+				
+			<ul>
+				<li>
+					<span class="message">
+						To access the application, please create a user using the form below.	
+					</span>
+				</li>		
+				<li>
+					<label for="" class="background-label username">Username</label>
+					{% if errors.username %}<p class="error">{% endif %}
+					<input id="" name="username" type="text" placeholder="Username" value="{{ form_data.username }}" />
+					{% if errors.username %}<span>{{ errors.username }}</span></p> {% endif %}
+				</li>
+				<li>
+					<label for="" class="background-label password">Password</label>
+					{% if errors.password %}<p class="error">{% endif %}
+					<input id="" name="password" type="password" placeholder="Password" />
+					{% if errors.password %}<span> {{ errors.password }}</span></p>{% endif %}	
+				</li>
+				</ul>
+			</fieldset>
+			<ul class="form_footer">
+				<li>
+					{{ app.xsrf }}
+					<input type="hidden" name="next" value="{{ next }}" />
+					<input class="button-submit" type="submit" value="Create">
+				</li>	
+			</ul>
+			</form>
+		</div><!-- form block END -->
+{% endblock %}

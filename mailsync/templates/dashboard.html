@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Dasbhoard{% endblock %}
+
+{% block wrapper %}medium_wrapper {% endblock wrapper %}
+
+{% block content %}
+
+<a class="logout" href="{{ app.base_url }}/logout">Logout</a>
+<a class="button-default new-sync" href="{{ app.base_url }}/api">New sync</a>
+
+{% if synced_lists %}
+	<div id="form_block">
+		<table>
+			<thead>
+				<tr>
+					<th>Provider</th>
+					<th>List</th>
+					<th>Database:Table</th>
+					<th>Last sync</th>
+					<th>To sync</th>
+					<th></th>
+				</tr>
+			</thead>
+			{% for synced_list in synced_lists %}
+				<tr>	
+					<td>{{ synced_list.provider }}</td>
+					<td>{{ synced_list.name }}</td>
+					<td>
+						<span class="tooltip">i</span>
+						<div class="tooltip-block">
+						<ul>
+							<li>
+								<span>host:</span>{{ synced_list.database.host }} 
+							</li>
+							<li>
+								<span>driver:</span>{{ synced_list.database.driver }} 
+							</li>
+							<li>
+								<span>port:</span>{{ synced_list.database.port }} 
+							</li>
+						</ul>
+						</div>
+						{{ synced_list.database.database }}:{{ synced_list.table }}
+					</td>
+					<td>{{ synced_list.last_synced|date_local }}</td>
+					<td>{{ synced_list.rows_to_be_synced }}</td>
+					<td class='actions'>
+						{% if synced_list.rows_to_be_synced > 0  %}
+							<a class="sync-now button-default" data-id="{{ synced_list.id }}" href="javascript:void(0);"> 
+							Sync Now</a>
+						{% else %}
+							<span class="all_synced" >All synced</span>
+						{% endif %}
+						<a class="delete-now button-delete" data-id="{{ synced_list.id }}" href="javascript:void(0);">Delete</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+		{{ app.xsrf }}
+	</div>
+{% else %}
+	<div id="form_block">
+		<h1>Hello. Welcome to Mailsync.</h1>
+		<h2>Have a quick tour (and effectively use Mailsync):</h2>
+
+		<p class="quick-tour-explain"><em>1.</em> This is the Dashboard. This is where you can view and sync your data. To create new sync just click the "New Sync" button.</p>
+		<div class="tour-image-container">
+			<img width="960px" height="560px" src="{{app.base_url}}/media/images/screens/dashboard.png"/>
+		</div>
+
+		<p class="quick-tour-explain"><em>2.</em> Here we ask for your provider data. Just select the list you need to synchronize.</p>
+		<div class="tour-image-container">
+			<img width="960px" height="560px" src="{{app.base_url}}/media/images/screens/api.png"/>
+		</div>
+
+		<p class="quick-tour-explain"><em>3.</em> We need your database credentials and the user's table. Once selected you can continue by pressing the "Next" button.</p>
+		<div class="tour-image-container">
+			<img width="960px" height="560px" src="{{app.base_url}}/media/images/screens/database.png"/>
+		</div>
+
+		<p class="quick-tour-explain"><em>4.</em> And the third piece of information we will get is the connection between table and email fields.</p>
+		<div class="tour-image-container">
+			<img width="960px" height="560px" src="{{app.base_url}}/media/images/screens/column.png"/>
+		</div>
+		<p class="quick-tour-explaing"><em>5.</em> That's it. No more steps, you've just achieved Mailsync Level 2 :).</p>
+	</div>
+	<a class="button-default new-sync new-sync-bottom" href="{{ app.base_url }}/api">New sync</a>
+{% endif %}
+{% endblock content %}
+
+{% block javascript %}
+	<script type="text/javascript" src="{{ app.base_url }}/media/js/libs/jquery.tools.tooltip.min.js"></script>
+	<script type="text/javascript" src="{{ app.base_url }}/media/js/dashboard.js"></script>
+{% endblock %}
+
+{% block footer %}
+	<div id="progress">
+		<div class="medium_wrapper">
+			<span>Syncing</span>
+			<div id="progress-bar">
+				<div id="status"></div>
+			</div>
+		</div>
+	</div>
+{% endblock footer %}

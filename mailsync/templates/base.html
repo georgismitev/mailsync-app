@@ -1,0 +1,54 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Mailsync {{ app.version }} - {{ title }}{% block title %}{% endblock %}</title> 
+
+  <meta name="viewport" content="width=device-width">
+  <link rel="icon" type="image/png" href="{{ app.base_url }}/media/images/favicon.png">
+  <link rel="stylesheet" href="{{ app.base_url }}/media/css/screen.css">
+
+  {% block style %}
+  {% endblock style %}
+
+</head>
+<body>
+  <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> 
+  <a href="http://browsehappy.com/">Upgrade to a different browser</a> or
+  <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+
+  <div id="topbar"></div>
+  <div class="content_block">
+    <div class="{% block wrapper %}small_wrapper{% endblock %}">
+    	<a class="logo" href="/"></a>
+  		{% block content %}
+  		{% endblock content %}
+    </div><!-- small_wrapper END -->
+	</div><!-- content block END -->
+
+  {% block footer %}
+  {% endblock footer %}
+  
+  <div id="message">
+    <div class="medium_wrapper">
+      <span></span>
+    </div>
+  </div>
+
+	<div id="bottombar"></div>
+
+  <script type="text/javascript" src="{{app.base_url}}/media/js/libs/jquery.min.js" ></script>
+  <script type="text/javascript" src="{{app.base_url}}/media/js/libs/underscore-min.js"></script>
+  <script type="text/javascript" src="{{app.base_url}}/media/js/libs/backbone-min.js"></script>
+  <script type="text/javascript" src="{{app.base_url}}/media/js/libs/common.js"></script>
+ 
+  <script type="text/javascript" src="{{app.base_url}}/media/js/message.js"></script>
+
+  {% block javascript %}
+  {% endblock javascript %}
+	</body>
+</html>

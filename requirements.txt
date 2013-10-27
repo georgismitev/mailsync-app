@@ -1,0 +1,25 @@
+Django          - 1.4.1        - active 
+FormEncode      - 1.2.4        - active 
+Jinja2          - 2.6          - active 
+MySQL-python    - 1.2.3        - active 
+Python          - 2.7.3        - active development (/usr/lib/python2.7/lib-dynload)
+SQLAlchemy      - 0.7.8        - active 
+South           - 0.7.6        - active 
+argparse        - 1.2.1        - active development (/usr/lib/python2.7)
+createsend      - 2.2.0        - active 
+edda            - 0.7.0        - active 
+ipython         - 0.13         - active 
+mailsnake       - 1.6.1        - active 
+mysql-connector-python - 1.0.5        - active 
+nose            - 1.2.1        - active 
+pip             - 1.1          - active 
+psycopg2        - 2.4.5        - active 
+pymongo         - 2.2.1        - active 
+pytz            - 2012f        - active 
+requests        - 0.14.1       - active 
+setuptools      - 0.6c11       - active 
+simplejson      - 2.6.2        - active 
+sqlsoup         - 0.9.0        - active 
+tornado         - 2.3          - active 
+wsgiref         - 0.1.2        - active development (/usr/lib/python2.7)
+yolk            - 0.4.3        - active 
